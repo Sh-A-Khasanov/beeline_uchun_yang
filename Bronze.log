@@ -1,0 +1,6 @@
+[2025-09-29 15:43:32] Proxy fayl topilmadi
+[2025-09-29 15:43:32] === ID=21 Region=15 Warehouse=1211 Mask=9989**0*0*0* ===
+[2025-09-29 15:43:33] GET https://nomer.beeline.uz/msapi/web/rms/phone-numbers/?page=0&size=100&warehouse_code=1211&phone_number_mask=9989**0*0*0* (attempt=1)
+[2025-09-29 15:43:33] 429: 2.0s kutilyapti (attempt=1) URL=https://nomer.beeline.uz/msapi/web/rms/phone-numbers/?page=0&size=100&warehouse_code=1211&phone_number_mask=9989**0*0*0*
+[2025-09-29 15:43:37] GET https://nomer.beeline.uz/msapi/web/rms/phone-numbers/?page=0&size=100&warehouse_code=1211&phone_number_mask=9989**0*0*0* (attempt=2)
+[2025-09-29 15:43:37] 429: 4.3s kutilyapti (attempt=2) URL=https://nomer.beeline.uz/msapi/web/rms/phone-numbers/?page=0&size=100&warehouse_code=1211&phone_number_mask=9989**0*0*0*

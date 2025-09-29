@@ -1,0 +1,39 @@
+{
+    "Buxoro": {
+        "regions_id": 15,
+        "warehouses": {
+            "Oddiy": {
+                "category_id": 1,
+                "code": 110
+            },
+            "Bronze": {
+                "category_id": 2,
+                "code": 1211
+            },
+            "Silver": {
+                "category_id": 3,
+                "code": 109
+            },
+            "Gold": {
+                "category_id": 4,
+                "code": 108
+            },
+            "Platinum": {
+                "category_id": 5,
+                "code": 107
+            },
+            "Platinum10": {
+                "category_id": 6,
+                "code": 3658
+            },
+            "Platinum20": {
+                "category_id": 7,
+                "code": 905
+            },
+            "Platinum30": {
+                "category_id": 8,
+                "code": 1070
+            }
+        }
+    }
+}
