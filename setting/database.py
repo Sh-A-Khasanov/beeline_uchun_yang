@@ -188,60 +188,40 @@ def init_db():
         }
     )
     create_or_update_table(
-        "Bronze",
+        "numbers_esim",
         """
-        CREATE TABLE Bronze (
-        id INTEGER PRIMARY KEY,
-        phoneNumber TEXT,
-        ctnStatus TEXT,
-        phoneNumberStatus TEXT,
-        phoneNumberStatusId INTEGER,
-        warehouseCode INTEGER,
-        price REAL,
-        warehouse TEXT,
-        warehouseId INTEGER,
-        createdAt TEXT,
-        updatedAt TEXT,
-        createdBy TEXT,
-        createdById INTEGER,
-        modifiedBy TEXT,
-        modifiedById INTEGER,
-        region_id INTEGER,
-        warehouseCodeInput INTEGER
-    )
+        CREATE TABLE numbers_esim  (
+            id INTEGER PRIMARY KEY,
+            phoneNumber TEXT,
+            name TEXT,
+            price REAL,
+            cancelDate TEXT,
+            code TEXT,
+            n1 TEXT,
+            n2 TEXT,
+            n3 TEXT,
+            n4 TEXT,
+            n5 TEXT,
+            n6 TEXT,
+            n7 TEXT
+        )
         """,
         {
             "id": "INTEGER",
             "phoneNumber": "TEXT",
-            "ctnStatus": "TEXT",
-            "phoneNumberStatus": "TEXT",
-            "phoneNumberStatusId": "INTEGER",
-            "warehouseCode": "INTEGER",
+            "name": "TEXT",
             "price": "REAL",
-            "warehouse": "TEXT",
-            "warehouseId": "INTEGER",
-            "createdAt": "TEXT",
-            "updatedAt": "TEXT",
-            "createdBy": "TEXT",
-            "createdById": "INTEGER",
-            "modifiedBy": "TEXT",
-            "modifiedById": "INTEGER",
-            "region_id": "INTEGER",
-            "warehouseCodeInput": "INTEGER"
+            "cancelDate": "TEXT",
+            "code": "TEXT",
+            "n1": "TEXT",
+            "n2": "TEXT",
+            "n3": "TEXT",
+            "n4": "TEXT",
+            "n5": "TEXT",
+            "n6": "TEXT",
+            "n7": "TEXT"
         }
     )
-
-
-
-
-
-
-
-
-
-
-
-
 
     create_or_update_table(
         "full_combinations",

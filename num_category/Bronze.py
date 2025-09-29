@@ -136,6 +136,7 @@ def save_to_db(conn, file_name, content, regions_id, warehouse_code):
             item.get("createdById"),
             item.get("modifiedBy"),
             item.get("modifiedById"),
+
             regions_id,
             warehouse_code
         ))
