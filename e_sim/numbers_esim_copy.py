@@ -277,7 +277,7 @@ async def main():
         working = []
 
     # read phones from DB table full_combinations
-    cursor.execute("SELECT phonenumber FROM full_combinations WHERE sim_esim = 'e_sim' AND id > 1")
+    cursor.execute("SELECT phonenumber FROM full_combinations WHERE sim_esim = 'e_sim' AND id > 1864")
 
     rows = cursor.fetchall()
     phones = [r[0] for r in rows]
