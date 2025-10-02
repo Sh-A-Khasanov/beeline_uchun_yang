@@ -247,7 +247,7 @@ async def process_phone(phone, index, session, proxies):
         return
 
     content = data.get("data", {}).get("content", [])
-    save_to_db(content)
+    save_to_db(content, phone)
 
     total_pages = data.get("data", {}).get("totalPages", 1)
     print(f"{phone}: total pages {total_pages}")

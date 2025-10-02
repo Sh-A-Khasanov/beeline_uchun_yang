@@ -42,7 +42,7 @@ def get_kategoriya():
     try:
         cur.execute("""
             SELECT 
-                id, warehouse_id, regions_id, region_name, category_id, 
+                id, warehouse_id, regions_id, regions_name, category_id, 
                 warehouse_category, code, category_table_id, mask, sim_esim, category_name
             FROM warehouse_categories
         """)
@@ -60,7 +60,7 @@ def Update_data():
     Maskalar = get_kategoriya()
 
     for row in Maskalar:
-        (mask_id, warehouse_id, regions_id, region_name, category_id,
+        (mask_id, warehouse_id, regions_id, regions_name, category_id,
          warehouse_category, code, category_table_id, mask_name, sim_esim, category_name) = row
 
         phonenumber = generate_phonenumber(mask_name)
@@ -79,10 +79,10 @@ def Update_data():
                         
                         cur.execute("""
                             INSERT INTO full_combinations (
-                                mask_id, warehouse_id, regions_id, region_name, category_id, 
+                                mask_id, warehouse_id, regions_id, regions_name, category_id, 
                                 warehouse_category, code, category_table_id, mask, sim_esim, category_name, phonenumber
                             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                        """, (mask_id, warehouse_id, regions_id, region_name, category_id,
+                        """, (mask_id, warehouse_id, regions_id, regions_name, category_id,
                               warehouse_category, code, category_table_id, mask_name, sim_esim, category_name, phonenumber1))
 
         elif '{B}' in phonenumber:
@@ -96,19 +96,19 @@ def Update_data():
                 
                 cur.execute("""
                     INSERT INTO full_combinations (
-                        mask_id, warehouse_id, regions_id, region_name, category_id, 
+                        mask_id, warehouse_id, regions_id, regions_name, category_id, 
                         warehouse_category, code, category_table_id, mask, sim_esim, category_name, phonenumber
                     ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """, (mask_id, warehouse_id, regions_id, region_name, category_id,
+                """, (mask_id, warehouse_id, regions_id, regions_name, category_id,
                       warehouse_category, code, category_table_id, mask_name, sim_esim, category_name, phonenumber1))
 
         else:
             cur.execute("""
                 INSERT INTO full_combinations (
-                    mask_id, warehouse_id, regions_id, region_name, category_id, 
+                    mask_id, warehouse_id, regions_id, regions_name, category_id, 
                     warehouse_category, code, category_table_id, mask, sim_esim, category_name, phonenumber
                 ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-            """, (mask_id, warehouse_id, regions_id, region_name, category_id,
+            """, (mask_id, warehouse_id, regions_id, regions_name, category_id,
                   warehouse_category, code, category_table_id, mask_name, sim_esim, category_name, phonenumber))
 
     conn.commit()

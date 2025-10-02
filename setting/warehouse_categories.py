@@ -15,13 +15,13 @@ cursor.execute("DELETE FROM warehouse_categories")
 # JOIN qilib yozish (sim_esim qo‘shildi)
 query = """
 INSERT INTO warehouse_categories (
-    warehouse_id, regions_id, region_name, category_id, warehouse_category, code,
+    warehouse_id, regions_id, regions_name, category_id, warehouse_category, code,
     category_table_id, mask, category_name, sim_esim
 )
 SELECT 
     w.id AS warehouse_id,
     w.regions_id,
-    w.region_name,
+    w.regions_name,
     w.category_id,
     w.category AS warehouse_category,
     w.code,

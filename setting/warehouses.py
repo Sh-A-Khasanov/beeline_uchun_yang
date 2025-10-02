@@ -78,7 +78,7 @@ cur = conn.cursor()
 for region, data in regions.items():
     for category, info in data["warehouses"].items():
         cur.execute(
-    "INSERT OR IGNORE INTO warehouses (regions_id, region_name, category_id, category, code) VALUES (?, ?, ?, ?, ?)",
+    "INSERT OR IGNORE INTO warehouses (regions_id, regions_name, category_id, category, code) VALUES (?, ?, ?, ?, ?)",
     (data["regions_id"], region, info["category_id"], category, info["code"])
 )
 
