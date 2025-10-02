@@ -149,15 +149,15 @@ def split_phone(phone_number: str):
 def save_to_db(content, phone):
     # full_combinations dan qo‘shimcha ma’lumotlarni olish
     cursor.execute("""
-        SELECT regions_id, regions_name, category_id, warehouse_category, code
+        SELECT mask_id, mask, category_id, warehouse_category, code
         FROM full_combinations
         WHERE phonenumber = ?
     """, (phone,))
     row = cursor.fetchone()
     if row:
-        regions_id, regions_name, category_id, warehouse_category, code = row
+        mask_id, mask, category_id, warehouse_category, code = row
     else:
-        regions_id = regions_name = category_id = warehouse_category = code = None
+        mask_id = mask = category_id = warehouse_category = code = None
 
     for item in content:
         phoneNumber = item.get("phoneNumber")
@@ -172,8 +172,8 @@ def save_to_db(content, phone):
             item.get("cancelDate"),
             code_num,
             *digits[:7],
-            regions_id,
-            regions_name,
+            mask_id,
+            mask,
             category_id,
             warehouse_category,
             code
@@ -182,7 +182,7 @@ def save_to_db(content, phone):
             INSERT OR IGNORE INTO numbers_esim
             (id, phoneNumber, name, price, cancelDate, code,
              n1, n2, n3, n4, n5, n6, n7,
-             regions_id, regions_name, category_id, warehouse_category, code)
+             mask_id, mask, category_id, warehouse_category, code)
             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, values)
     conn.commit()
@@ -224,7 +224,7 @@ async def fetch(session, phone, page, proxies):
                 print(f"OK: phone={phone} page={page} IP={proxy_raw} UA={headers['User-Agent'][:30]}...")
                 return data
         except Exception as e:
-            backoff = random.uniform(1.5, 5.0) * (attempt + 1)
+            backoff = random.uniform(1.5, 4.0) * (attempt + 1)
             print(f"Request error ({proxy_raw}): {e}. backoff {backoff:.1f}s")
             await asyncio.sleep(backoff)
             # rotate proxy and UA between attempts
@@ -260,7 +260,7 @@ async def process_phone(phone, index, session, proxies):
         content = data_page.get("data", {}).get("content", [])
         save_to_db(content)
         print(f"{phone}: page {page+1}/{total_pages} saved")
-        await asyncio.sleep(random.uniform(2, 6.0))
+        await asyncio.sleep(random.uniform(2, 4.0))
 
 # --------- Main ----------
 async def main():
@@ -277,7 +277,7 @@ async def main():
         working = []
 
     # read phones from DB table full_combinations
-    cursor.execute("SELECT phonenumber FROM full_combinations WHERE sim_esim = 'e_sim'")
+    cursor.execute("SELECT phonenumber FROM full_combinations WHERE sim_esim = 'e_sim' AND id > 1")
 
     rows = cursor.fetchall()
     phones = [r[0] for r in rows]
@@ -289,7 +289,7 @@ async def main():
     async with aiohttp.ClientSession(connector=connector, timeout=timeout) as session:
         for idx, phone in enumerate(phones):
             await process_phone(phone, idx, session, working)
-            await asyncio.sleep(random.uniform(2.0, 6.0))
+            await asyncio.sleep(random.uniform(2.0, 4.0))
 
 if __name__ == "__main__":
     try:
