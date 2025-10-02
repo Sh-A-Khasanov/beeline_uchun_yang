@@ -9,7 +9,7 @@ from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.chrome.options import Options
-from full_combinations import generate_phonenumber, get_kategoriya
+from setting.full_combinations import generate_phonenumber, get_kategoriya
 
 
 

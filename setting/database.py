@@ -94,6 +94,7 @@ def init_db():
         """
         CREATE TABLE number_mask (
             id INTEGER PRIMARY KEY,
+            sim_esim TEXT,
             mask TEXT,
             category TEXT,
             category_id TEXT
@@ -101,6 +102,7 @@ def init_db():
         """,
         {
             "id": "INTEGER",
+            "sim_esim": "TEXT",
             "mask": "TEXT",     
             "category": "TEXT",
             "category_id": "TEXT"
@@ -192,6 +194,11 @@ def init_db():
         """
         CREATE TABLE numbers_esim  (
             id INTEGER PRIMARY KEY,
+            regions_id INTEGER,
+            regions_name TEXT,
+            category_id INTEGER,
+            warehouse_category TEXT,
+            code INTEGER,
             phoneNumber TEXT,
             name TEXT,
             price REAL,
@@ -208,6 +215,11 @@ def init_db():
         """,
         {
             "id": "INTEGER",
+            "regions_id": "INTEGER",
+            "regions_name": "TEXT",
+            "category_id": "INTEGER",
+            "warehouse_category": "TEXT",
+            "code": "INTEGER",
             "phoneNumber": "TEXT",
             "name": "TEXT",
             "price": "REAL",
@@ -237,6 +249,7 @@ def init_db():
             code TEXT,
             category_table_id INTEGER,
             mask TEXT,
+            sim_esim TEXT,
             category_name TEXT,
             phonenumber TEXT
         )
@@ -252,10 +265,12 @@ def init_db():
             "code": "TEXT",
             "category_table_id": "INTEGER",
             "mask": "TEXT",
+            "sim_esim": "TEXT",
             "category_name": "TEXT",
             "phonenumber": "TEXT"
         }
     )
+    
     create_or_update_table(
         "warehouse_categories",
         """
@@ -269,6 +284,7 @@ def init_db():
             code TEXT,
             category_table_id INTEGER,
             mask TEXT,
+            sim_esim TEXT,
             category_name TEXT
         )
         """,
@@ -282,6 +298,7 @@ def init_db():
             "code": "TEXT",
             "category_table_id": "INTEGER",
             "mask": "TEXT",
+            "sim_esim": "TEXT",
             "category_name": "TEXT"
         }
     )

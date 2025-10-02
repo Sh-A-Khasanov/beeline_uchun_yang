@@ -33,24 +33,6 @@ URL = "https://nomer.beeline.uz/msapi/web/rms-new/phone-numbers"
 # --------- DB init ----------
 conn = sqlite3.connect(DB_NAME, check_same_thread=True)
 cursor = conn.cursor()
-
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS numbers_esim (
-    id INTEGER PRIMARY KEY,
-    phoneNumber TEXT UNIQUE,
-    name TEXT,
-    price REAL,
-    cancelDate TEXT,
-    code TEXT,
-    n1 TEXT,
-    n2 TEXT,
-    n3 TEXT,
-    n4 TEXT,
-    n5 TEXT,
-    n6 TEXT,
-    n7 TEXT
-)
-""")
 conn.commit()
 
 # --------- User agents ----------
@@ -163,28 +145,48 @@ def split_phone(phone_number: str):
     return code, digits
 
 # --------- Save to DB ----------
-def save_to_db(content):
+# --------- Save to DB ----------
+def save_to_db(content, phone):
+    # full_combinations dan qo‘shimcha ma’lumotlarni olish
+    cursor.execute("""
+        SELECT regions_id, regions_name, category_id, warehouse_category, code
+        FROM full_combinations
+        WHERE phonenumber = ?
+    """, (phone,))
+    row = cursor.fetchone()
+    if row:
+        regions_id, regions_name, category_id, warehouse_category, code = row
+    else:
+        regions_id = regions_name = category_id = warehouse_category = code = None
+
     for item in content:
         phoneNumber = item.get("phoneNumber")
         if not phoneNumber:
             continue
-        code, digits = split_phone(phoneNumber)
+        code_num, digits = split_phone(phoneNumber)
         values = (
             item.get("id"),
             phoneNumber,
             item.get("name"),
             item.get("price"),
             item.get("cancelDate"),
-            code,
-            *digits[:7]
+            code_num,
+            *digits[:7],
+            regions_id,
+            regions_name,
+            category_id,
+            warehouse_category,
+            code
         )
         cursor.execute("""
             INSERT OR IGNORE INTO numbers_esim
             (id, phoneNumber, name, price, cancelDate, code,
-             n1, n2, n3, n4, n5, n6, n7)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+             n1, n2, n3, n4, n5, n6, n7,
+             regions_id, regions_name, category_id, warehouse_category, code)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, values)
     conn.commit()
+
 
 
 # --------- Fetch with rotating proxy + UA ----------
@@ -275,7 +277,8 @@ async def main():
         working = []
 
     # read phones from DB table full_combinations
-    cursor.execute("SELECT phonenumber FROM full_combinations")
+    cursor.execute("SELECT phonenumber FROM full_combinations WHERE sim_esim = 'e_sim'")
+
     rows = cursor.fetchall()
     phones = [r[0] for r in rows]
     print(f"Loaded {len(phones)} phones from DB")
