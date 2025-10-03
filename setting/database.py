@@ -200,18 +200,18 @@ def init_db():
             mask TEXT,
             category_id INTEGER,
             warehouse_category TEXT,
-            code INTEGER,
-            phoneNumber TEXT,
+            phoneNumber INTEGER,
             name TEXT,
             price REAL,
             cancelDate TEXT,
-            n1 TEXT,
-            n2 TEXT,
-            n3 TEXT,
-            n4 TEXT,
-            n5 TEXT,
-            n6 TEXT,
-            n7 TEXT
+            code INTEGER,
+            n1 INTEGER,
+            n2 INTEGER,
+            n3 INTEGER,
+            n4 INTEGER,
+            n5 INTEGER,
+            n6 INTEGER,
+            n7 INTEGER
         )
         """,
         {
@@ -222,21 +222,39 @@ def init_db():
             "mask": "TEXT",
             "category_id": "INTEGER",
             "warehouse_category": "TEXT",
-            "phoneNumber": "TEXT",
+            "phoneNumber": "INTEGER",
             "name": "TEXT",
             "price": "REAL",
             "cancelDate": "TEXT",
-            "code": "TEXT",
-            "n1": "TEXT",
-            "n2": "TEXT",
-            "n3": "TEXT",
-            "n4": "TEXT",
-            "n5": "TEXT",
-            "n6": "TEXT",
-            "n7": "TEXT"
+            "code": "INTEGER",
+            "n1": "INTEGER",
+            "n2": "INTEGER",
+            "n3": "INTEGER",
+            "n4": "INTEGER",
+            "n5": "INTEGER",
+            "n6": "INTEGER",
+            "n7": "INTEGER"
         }
     )
-
+    create_or_update_table(
+        "prefix",
+        """
+        CREATE TABLE prefix (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            regions_id INTEGER,
+            regions_name TEXT,
+            n_Code INTEGER,
+            ate INTEGER
+        )
+        """,
+        {
+            "id": "INTEGER",
+            "regions_id": "INTEGER",
+            "regions_name": "TEXT",
+            "n_Code": "INTEGER",
+            "ate": "INTEGER"
+        }
+    )
     create_or_update_table(
         "full_combinations",
         """
@@ -305,7 +323,6 @@ def init_db():
         }
     )
     conn.commit()
-
     # phoneNumber uchun 
     cursor.execute("PRAGMA index_list('numbers')")
     indexes = [r[1] for r in cursor.fetchall()]
