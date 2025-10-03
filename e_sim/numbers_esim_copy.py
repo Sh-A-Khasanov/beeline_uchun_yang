@@ -22,6 +22,7 @@ from urllib.parse import urlencode
 import time
 import os
 from aiohttp import ClientTimeout, BasicAuth
+from datetime import datetime
 
 # --------- Config load ----------
 with open("config/config.json", "r", encoding="utf-8") as f:
@@ -147,6 +148,8 @@ def split_phone(phone_number: str):
 # --------- Save to DB ----------
 # --------- Save to DB ----------
 def save_to_db(content, phone):
+    updated_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
     # full_combinations dan qo‘shimcha ma’lumotlarni olish
     cursor.execute("""
         SELECT mask_id, mask, category_id, warehouse_category, code
@@ -176,16 +179,28 @@ def save_to_db(content, phone):
             mask,
             category_id,
             warehouse_category,
-            code
+            code,
+            1  # status_api
         )
+
+        # Agar bo‘lmasa insert, agar bo‘lsa update qilib status_api=1
         cursor.execute("""
-            INSERT OR IGNORE INTO numbers_esim
+            INSERT INTO numbers_esim
             (id, phoneNumber, name, price, cancelDate, code,
-             n1, n2, n3, n4, n5, n6, n7,
-             mask_id, mask, category_id, warehouse_category, code)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        """, values)
+            n1, n2, n3, n4, n5, n6, n7,
+            mask_id, mask, category_id, warehouse_category, code, status_api, updated_at)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            ON CONFLICT(id) DO UPDATE SET
+                name=excluded.name,
+                price=excluded.price,
+                cancelDate=excluded.cancelDate,
+                status_api=1,
+                updated_at=excluded.updated_at
+        """, values + (updated_at,))
+
+
     conn.commit()
+
 
 
 
@@ -264,6 +279,10 @@ async def process_phone(phone, index, session, proxies):
 
 # --------- Main ----------
 async def main():
+    # Barcha eski raqamlarni 0 qilib qo‘yish
+    cursor.execute("UPDATE numbers_esim SET status_api = 0")
+    conn.commit()
+    print("Reset status_api to 0 in numbers_esim")
     # load proxies, test them, keep working ones
     proxies_all = load_proxies()
     print(f"Loaded {len(proxies_all)} proxies from {PROXY_FILE}")
@@ -277,7 +296,7 @@ async def main():
         working = []
 
     # read phones from DB table full_combinations
-    cursor.execute("SELECT phonenumber FROM full_combinations WHERE sim_esim = 'e_sim' AND id > 1864")
+    cursor.execute("SELECT phonenumber FROM full_combinations WHERE sim_esim = 'e_sim' AND id > 1")
 
     rows = cursor.fetchall()
     phones = [r[0] for r in rows]
